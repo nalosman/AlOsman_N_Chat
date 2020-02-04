@@ -26,6 +26,17 @@ io.on('connection', function(socket) {
     console.log('user connected');
     socket.emit('connected', {sID: `${socket.id}`, message: 'new connection'});
 
+    //listen for an incoming message from a user(socket referes ot indiv user)
+    //msg is the incoming message form that user
+    socket.on('chat_message', function(msg) {
+        console.log(msg);
+
+        //WHEN WE GET A NEW MESSAGE, SEND IT TO EVERYONE SO THEY CAN SEE IT
+        //IO IS THE SWITCHBOARD OPERATOR, MAKING SURE EVERYON WHO;S OCNNECTED
+        //GET THE MESSAGE
+        io.emit('new_message',  { id: socket.id, message: msg})
+    })
+
     //listen for a disconnect event
     socket.on('disconnect', function(){
         console.log('a user is disconnected');
